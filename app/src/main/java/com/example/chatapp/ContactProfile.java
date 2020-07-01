@@ -51,7 +51,7 @@ public class ContactProfile extends AppCompatActivity {
         recevierImageUri = intent.getStringExtra("recevierImageUri");
         recevierStatus = intent.getStringExtra("recevierStatus");
 
-        Glide.with(getApplicationContext()).load(intent.getStringExtra(recevierImageUri)).into(circleImageView);
+        Glide.with(getApplicationContext()).load(recevierImageUri).into(circleImageView);
         recevierNameTextView.setText(recevierName);
         recevierEmailTextView.setText(recevierEmail);
         recevierStatusTextView.setText(recevierStatus);

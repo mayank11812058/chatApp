@@ -93,7 +93,6 @@ public class ContactsActivity extends AppCompatActivity {
             @SuppressLint("NewApi")
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                Toast.makeText(getApplicationContext(), "Changes", Toast.LENGTH_LONG).show();
                 users.clear();
 
                 for(QueryDocumentSnapshot snapshots : queryDocumentSnapshots){

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +47,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static android.app.Activity.RESULT_OK;
 
 public class UsersFragment extends Fragment implements View.OnClickListener {
+    ProgressBar progressBar;
     CircleImageView circleImageView;
     TextView textView;
     RecyclerView recyclerView;
@@ -68,6 +70,7 @@ public class UsersFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_users, container, false);
+        progressBar = view.findViewById(R.id.statusProgressBar);
         circleImageView = view.findViewById(R.id.statusImageView);
         circleImageView.setOnClickListener(this);
         textView = view.findViewById(R.id.statusNameTextView);
@@ -184,6 +187,7 @@ public class UsersFragment extends Fragment implements View.OnClickListener {
     }
 
     public void uploadStatus(Uri imageUri){
+        progressBar.setVisibility(View.VISIBLE);
         final StorageReference imageReference =  storage.child("Images").child("images" + Timestamp.now().getSeconds());
         imageReference.putFile(imageUri)
                 .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
@@ -199,11 +203,13 @@ public class UsersFragment extends Fragment implements View.OnClickListener {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 Toast.makeText(getContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+                                                progressBar.setVisibility(View.GONE);
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
                                                 Toast.makeText(getContext(), e.getMessage().toString(), Toast.LENGTH_LONG).show();
+                                                progressBar.setVisibility(View.GONE);
                                             }
                                         });
                                     }
@@ -212,6 +218,7 @@ public class UsersFragment extends Fragment implements View.OnClickListener {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 Toast.makeText(getContext(), "Try Again", Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.GONE);
                             }
                         });
                     }
@@ -219,6 +226,7 @@ public class UsersFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(getContext(), "Try Again", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
             }
         });
 

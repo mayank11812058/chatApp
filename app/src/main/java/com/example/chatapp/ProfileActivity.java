@@ -24,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -66,6 +67,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     CollectionReference userReference = db.collection("User");
     StorageReference storage = FirebaseStorage.getInstance().getReference();
     String key;
+    RequestOptions requestOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +136,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                                             }
 
                                             key = snapshot.getId();
-                                            Glide.with(getApplicationContext()).load(currentUser.getImageUri()).into(imageView);
+
+                                            requestOptions = new RequestOptions();
+                                            requestOptions.fitCenter();
+                                            Glide.with(getApplicationContext()).applyDefaultRequestOptions(requestOptions).load(currentUser.getImageUri()).into(imageView);
                                         }
                                     }
                                 }
@@ -170,7 +175,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.profileRemovePhotoButton:
                 imageUri = null;
-                Glide.with(getApplicationContext()).load("https://firebasestorage.googleapis.com/v0/b/chatapp-8e9bc.appspot.com/o/Images%2Fmanicon.png?alt=media&token=ced165e8-15ea-42f9-ac2f-5bc161731a50")
+                Glide.with(getApplicationContext()).applyDefaultRequestOptions(requestOptions).load("https://firebasestorage.googleapis.com/v0/b/chatapp-8e9bc.appspot.com/o/Images%2Fmanicon.png?alt=media&token=ced165e8-15ea-42f9-ac2f-5bc161731a50")
                         .into(imageView);
                 break;
         }
