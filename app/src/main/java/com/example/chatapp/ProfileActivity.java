@@ -60,6 +60,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     ProgressBar progressBar;
     AppCompatButton saveButton;
     Uri imageUri;
+    String URI;
     FirebaseAuth firebaseAuth;
     FirebaseAuth.AuthStateListener authStateListener;
     FirebaseUser firebaseUser;
@@ -136,7 +137,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                                             }
 
                                             key = snapshot.getId();
-
+                                            URI = currentUser.getImageUri();
                                             requestOptions = new RequestOptions();
                                             requestOptions.fitCenter();
                                             Glide.with(getApplicationContext()).applyDefaultRequestOptions(requestOptions).load(currentUser.getImageUri()).into(imageView);
@@ -193,15 +194,20 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         if(requestCode == 1 && resultCode == RESULT_OK && data != null){
             imageUri = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-            Cursor cursor = getContentResolver().query(imageUri, filePathColumn, null, null, null);
-            cursor.moveToFirst();
-
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            final StorageReference imageReference =  storage.child("Images").child("images" + Timestamp.now().getSeconds());
+            imageReference.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    imageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Glide.with(getApplicationContext()).applyDefaultRequestOptions(requestOptions).load(uri.toString()).into(imageView);
+                            URI = uri.toString();
+                            imageUri = null;
+                        }
+                    });
+                }
+            });
         }
     }
 
@@ -262,9 +268,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     }
                 });
             }else{
-                String tempUri = "https://firebasestorage.googleapis.com/v0/b/chatapp-8e9bc.appspot.com/o/Images%2Fmanicon.png?alt=media&token=ced165e8-15ea-42f9-ac2f-5bc161731a50";
                 userReference.document(key).update("username", usernameEditText.getText().toString(),
-                        "status", statusEditText.getText().toString())
+                        "status", statusEditText.getText().toString(),
+                        "imageUri", URI)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid){

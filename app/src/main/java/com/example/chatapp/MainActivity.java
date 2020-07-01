@@ -31,14 +31,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        toolbar = findViewById(R.id.Toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(Color.WHITE);
-        loginButton = findViewById(R.id.loginButton);
-        signUpButton = findViewById(R.id.signUpButton);
-        loginButton.setOnClickListener(this);
-        signUpButton.setOnClickListener(this);
         firebaseAuth = FirebaseAuth.getInstance();
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -53,6 +45,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         };
+        setContentView(R.layout.activity_main);
+        toolbar = findViewById(R.id.Toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
+        loginButton = findViewById(R.id.loginButton);
+        signUpButton = findViewById(R.id.signUpButton);
+        loginButton.setOnClickListener(this);
+        signUpButton.setOnClickListener(this);
     }
 
     @Override

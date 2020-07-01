@@ -53,7 +53,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="30dp"
-        android:backgroundTint="#075E54"
+        android:backgroundTint="#128C7E"
         android:src="@drawable/contactlisticon"/>
 
 </RelativeLayout>
