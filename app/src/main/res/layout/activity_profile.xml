@@ -31,19 +31,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/profileImageView"
-                android:background="@drawable/circularborder"/>
+                android:background="@drawable/circularborder" />
 
             <ImageButton
                 android:id="@+id/profileAddPhotoButton"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_alignParentStart="true"
                 android:layout_alignParentTop="false"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="264dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="70dp"
+                android:layout_marginEnd="81dp"
                 android:layout_marginBottom="6dp"
                 android:background="@drawable/addphoto"
                 android:scaleType="fitXY"
@@ -58,8 +56,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="67dp"
-                android:layout_marginEnd="79dp"
-                android:layout_marginBottom="21dp"
+                android:layout_marginEnd="81dp"
+                android:layout_marginBottom="25dp"
                 android:background="@drawable/trash"
                 android:scaleType="fitXY"
                 android:tooltipText="Remove Photo" />

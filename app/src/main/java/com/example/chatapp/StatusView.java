@@ -87,6 +87,7 @@ public class StatusView extends AppCompatActivity implements View.OnClickListene
                     handler.postDelayed(this, 250);
                 }else{
                     Intent backIntent = new Intent(getApplicationContext(), ChatsActivity.class);
+                    backIntent.putExtra("statusView", "true");
                     startActivity(backIntent);
                     finish();
                 }
@@ -108,12 +109,16 @@ public class StatusView extends AppCompatActivity implements View.OnClickListene
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        System.out.println(position[0]);
                         if(position[0] != 4 * size) {
                             imageUri.remove((int)(position[0] / 4));
-                            position[0] += (4 - (position[0] % 4));
                         }else{
                             imageUri.remove(size - 1);
                         }
+                        size--;
+                        progressBar.setMax(size * 4);
+                        progressBar.setProgress(progressBar.getProgress() - progressBar.getProgress() % 4);
+                        System.out.println(position[0]);
                         handler.post(runnableCode);
                     }
                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -129,8 +134,8 @@ public class StatusView extends AppCompatActivity implements View.OnClickListene
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onPause() {
+        super.onPause();
 
         if(userId != null){
             FirebaseFirestore db = FirebaseFirestore.getInstance();

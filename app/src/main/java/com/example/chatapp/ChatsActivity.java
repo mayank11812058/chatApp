@@ -80,6 +80,11 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
         firebaseAuth = FirebaseAuth.getInstance();
+        Intent intent = getIntent();
+
+        if(intent != null && intent.getStringExtra("statusView") != null){
+            viewPager.setCurrentItem(2);
+        }
     }
 
     @Override

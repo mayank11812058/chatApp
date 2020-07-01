@@ -184,7 +184,6 @@ public class UsersFragment extends Fragment implements View.OnClickListener {
     }
 
     public void uploadStatus(Uri imageUri){
-        Glide.with(getContext()).load(currentUser.getImageUri()).into(circleImageView);
         final StorageReference imageReference =  storage.child("Images").child("images" + Timestamp.now().getSeconds());
         imageReference.putFile(imageUri)
                 .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
