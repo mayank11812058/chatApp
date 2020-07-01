@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:background="#128C7E">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="Profile"
+        android:id="@+id/profileToolbar"
+        android:background="#075E54"
+        app:titleTextColor="@android:color/white"
+        />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/profileCardView"
+        android:elevation="0dp"
+        android:backgroundTint="#128C7E">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/profileRelativeLayout">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/profileImageView"
+                android:background="@drawable/circularborder"/>
+
+            <ImageButton
+                android:id="@+id/profileAddPhotoButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="false"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="264dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="70dp"
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/addphoto"
+                android:scaleType="fitXY"
+                android:tooltipText="Add Photo" />
+
+            <ImageButton
+                android:id="@+id/profileRemovePhotoButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_above="@+id/profileAddPhotoButton"
+                android:layout_alignTop="@+id/profileAddPhotoButton"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="67dp"
+                android:layout_marginEnd="79dp"
+                android:layout_marginBottom="21dp"
+                android:background="@drawable/trash"
+                android:scaleType="fitXY"
+                android:tooltipText="Remove Photo" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/profileUsernameLayout"
+        android:layout_margin="10dp">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/profileUsernameText"
+            android:hint="@string/username"
+            android:inputType="text"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
+            android:textColor="@android:color/white"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/profileStatusLayout"
+        android:layout_margin="10dp">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/profileStatusText"
+            android:hint="Your Status"
+            android:inputType="text"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
+            android:textColor="@android:color/white"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ProgressBar
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:visibility="gone"
+        android:id="@+id/progressBar"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/saveButton"
+        android:text="Save"
+        android:layout_margin="10dp"
+        android:textColor="@android:color/background_light"
+        android:background="#075E54"
+        />
+</LinearLayout>

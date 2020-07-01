@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ChatActivity"
+    android:orientation="vertical"
+    android:weightSum="100"
+    android:background="#128C7E"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/chatToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#075E54"
+        app:titleTextColor="@android:color/white"
+        android:theme="@style/MyTheme"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/messagesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="90"
+        android:background="#128C7E"/>
+
+    <LinearLayout
+        android:id="@+id/currentMessageLayout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="2dp"
+        android:layout_weight="7"
+        android:weightSum="100"
+        android:orientation="horizontal"
+        android:background="@drawable/message">
+
+        <EditText
+            android:id="@+id/currentMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="90"
+            android:maxLines="2"
+            android:maxLength="40"
+            android:textColor="@android:color/black" />
+
+        <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:id="@+id/galleryButton"
+            android:layout_margin="2dp"
+            android:layout_weight="4"
+            android:layout_gravity="center"
+            android:background="@drawable/gallery" />
+
+        <ImageButton
+            android:id="@+id/sendButton"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center|right"
+            android:layout_margin="2dp"
+            android:layout_weight="4"
+            android:background="@drawable/sendicon" />
+    </LinearLayout>
+</LinearLayout>

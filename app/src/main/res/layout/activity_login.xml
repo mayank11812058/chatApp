@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:background="#128C7E">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="Login"
+        android:id="@+id/loginToolbar"
+        android:background="#075E54"
+        app:titleTextColor="@android:color/white"
+        />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:id="@+id/loginImageView"
+        android:layout_margin="10dp"
+        android:src="@drawable/logo"
+        android:background="#128C7E"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/loginErrorTextView"
+        android:text=""
+        android:visibility="gone"
+        android:layout_margin="10dp"
+        android:textColor="@android:color/holo_red_dark" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/loginEmailLayout"
+        android:layout_margin="10dp">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/loginEmailText"
+            android:hint="Email"
+            android:inputType="textWebEmailAddress"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
+            android:textColor="@android:color/white"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/loginPasswordLayout"
+        android:layout_margin="10dp"
+        app:passwordToggleEnabled="true">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/loginPasswordText"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
+            android:textColor="@android:color/white"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ProgressBar
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:visibility="gone"
+        android:id="@+id/progressBar"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/loginButton"
+        android:text="Login"
+        android:layout_margin="10dp"
+        android:textColor="@android:color/background_light"
+        android:background="#075E54"
+        />
+
+    <TextView
+        android:id="@+id/orTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Or"
+        android:textColor="@android:color/white"
+        android:textAlignment="center"/>
+
+    <Button
+        android:id="@+id/signUpButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#075E54"
+        android:layout_margin="10dp"
+        android:text="Sign Up"
+        android:textColor="@android:color/white" />
+</LinearLayout>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:background="#128C7E">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="Profile"
+        android:id="@+id/profileToolbar"
+        android:background="#075E54"
+        app:titleTextColor="@android:color/white"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/profileCardView"
+        android:elevation="5dp"
+        android:layout_margin="10dp"
+        android:backgroundTint="#128C7E">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/profileImageView"
+            android:src="#075E54"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/profileNameTextView"
+        android:layout_margin="10dp"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:background="#075E54"
+        android:padding="5dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/profileEmailTextView"
+        android:layout_margin="10dp"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:background="#075E54"
+        android:padding="5dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/profileStatusTextView"
+        android:layout_margin="10dp"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:background="#075E54"
+        android:padding="5dp"/>
+</LinearLayout>
