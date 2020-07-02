@@ -97,8 +97,8 @@ public class ChatsFragment extends Fragment {
                                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                         for(QueryDocumentSnapshot snapshots : queryDocumentSnapshots) {
                                             if ((snapshots.getString("userId").equals(firebaseUser.getUid().toString()) &&
-                                                    snapshots.getString("recevierId").equals(userId)) ||
-                                                    (snapshots.getString("recevierId").equals(firebaseUser.getUid().toString()) &&
+                                                    userId.equals(snapshots.getString("recevierId")) ||
+                                                    firebaseUser.getUid().toString().equals(snapshots.getString("recevierId")) &&
                                                             snapshots.getString("userId").equals(userId))) {
                                                 UserData userData = new UserData(username, email, imageUri, userId, status);
                                                 userData.setTime(snapshots.getLong("createdAt"));

@@ -49,7 +49,10 @@ public class UserData {
         this.email = email;
         this.imageUri = uri;
         this.userId = toString;
-        this.status = status[0];
+
+        if(status != null && status.length > 0) {
+            this.status = status[0];
+        }
     }
 
     public UserData(){

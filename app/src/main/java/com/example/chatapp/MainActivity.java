@@ -10,10 +10,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -38,8 +41,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 firebaseUser = firebaseAuth.getCurrentUser();
 
                 if(firebaseUser != null){
-                    startActivity(new Intent(MainActivity.this, ChatsActivity.class));
-                    finish();
+                    userReference.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for(QueryDocumentSnapshot snapshot : queryDocumentSnapshots){
+                                if(snapshot.getString("userId").equals(firebaseUser.getUid().toString())){
+                                    startActivity(new Intent(MainActivity.this, ChatsActivity.class));
+                                    finish();
+                                }
+                            }
+                        }
+                    });
                 }else{
 
                 }
