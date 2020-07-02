@@ -60,14 +60,20 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference userReference = db.collection("User");
     CollectionReference messageReference = db.collection("Messages");
+    CollectionReference groupReference = db.collection("Group");
     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
     String recevierName, recevierId, recevierEmail, recevierImageUri, recevierStatus, groupId, title;
     ArrayList<String> members;
     Uri imageUri;
+    Boolean isTrue;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.chat_menu, menu);
+        if(recevierId != null) {
+            getMenuInflater().inflate(R.menu.chat_menu, menu);
+        }else{
+            getMenuInflater().inflate(R.menu.groupchat_menu, menu);
+        }
         return true;
     }
 
@@ -86,6 +92,21 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 intent.putExtra("members", members);
                 startActivity(intent);
                 break;
+            case R.id.menuAddMember:
+                Intent addIntent = new Intent(ChatActivity.this, SelectMembersActivity.class);
+                SharedClass.selected.clear();
+                SharedClass.selected = members;
+                addIntent.putExtra("from", true);
+                addIntent.putExtra("recevierName", recevierName);
+                addIntent.putExtra("recevierEmail", recevierEmail);
+                addIntent.putExtra("recevierId", recevierId);
+                addIntent.putExtra("recevierImageUri", recevierImageUri);
+                addIntent.putExtra("recevierStatus", recevierStatus);
+                addIntent.putExtra("groupId", groupId);
+                addIntent.putExtra("title", title);
+                addIntent.putExtra("members", members);
+                startActivity(addIntent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -95,6 +116,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         Intent intent = getIntent();
+        isTrue = intent.getBooleanExtra("from", false);
         recevierName = intent.getStringExtra("recevierName");
         recevierId = intent.getStringExtra("recevierId");
         recevierEmail = intent.getStringExtra("recevierEmail");
@@ -213,6 +235,25 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 });
             }
         });
+
+        if(isTrue){
+            if(SharedClass.selected.size() > 0) {
+                for (String selections : SharedClass.selected) {
+                    members.add(selections);
+                }
+                groupReference.document(groupId).update("members", members).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(ChatActivity.this, "Member Added", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(ChatActivity.this, "Try Again", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
     }
 
     @Override

@@ -39,11 +39,37 @@ public class SelectMembersActivity extends AppCompatActivity implements View.OnC
     FirebaseUser firebaseUser;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference usersReference = db.collection("User");
+    Boolean isTrue;
+    String recevierName;
+    String recevierEmail;
+    String recevierId;
+    String recevierImageUri;
+    String recevierStatus;
+    String groupId;
+    String title;
+    ArrayList<String> members = new ArrayList<>();
+    ArrayList<String> groupMembers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_members);
+        Intent intent = getIntent();
+        isTrue = intent.getBooleanExtra("from", false);
+        recevierName = intent.getStringExtra("recevierName");
+        recevierEmail = intent.getStringExtra("recevierEmail");
+        recevierId = intent.getStringExtra("recevierId");
+        recevierImageUri = intent.getStringExtra("recevierImageUri");
+        recevierStatus = intent.getStringExtra("recevierStatus");
+        title = intent.getStringExtra("title");
+        groupId = intent.getStringExtra("groupId");
+        members = intent.getStringArrayListExtra("members");
+
+        for(String member: SharedClass.selected){
+            groupMembers.add(member);
+        }
+
+        SharedClass.selected.clear();
         toolbar = findViewById(R.id.selectMembersToolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.backbtn));
@@ -87,7 +113,7 @@ public class SelectMembersActivity extends AppCompatActivity implements View.OnC
                     String userId = snapshots.getString("userId");
                     String status = snapshots.getString("status");
 
-                    if(!userId.equals(firebaseUser.getUid().toString())){
+                    if(!groupMembers.contains(userId)){
                         UserData userData = new UserData(username, email, imageUri, userId, status);
                         users.add(userData);
                         recyclerViewSelectAdapter.notifyDataSetChanged();
@@ -118,7 +144,22 @@ public class SelectMembersActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(SelectMembersActivity.this, CreateGroupActivity.class));
+
+        if(isTrue){
+            Intent intent = new Intent(SelectMembersActivity.this, ChatActivity.class);
+            intent.putExtra("from", true);
+            intent.putExtra("recevierName", recevierName);
+            intent.putExtra("recevierEmail", recevierEmail);
+            intent.putExtra("recevierImageUri", recevierImageUri);
+            intent.putExtra("recevierId", recevierId);
+            intent.putExtra("recevierStatus", recevierStatus);
+            intent.putExtra("title", title);
+            intent.putExtra("groupId", groupId);
+            intent.putExtra("members", members);
+            startActivity(intent);
+        }else{
+            startActivity(new Intent(SelectMembersActivity.this, CreateGroupActivity.class));
+        }
         finish();
     }
 
@@ -135,7 +176,7 @@ public class SelectMembersActivity extends AppCompatActivity implements View.OnC
                     String userId = snapshots.getString("userId");
                     String status = snapshots.getString("status");
 
-                    if(!userId.equals(firebaseUser.getUid().toString())){
+                    if(!groupMembers.contains(userId)){
 
                         UserData userData = new UserData(username, email, imageUri, userId, status);
                         users.add(userData);

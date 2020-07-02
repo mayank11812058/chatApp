@@ -171,6 +171,7 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
             case R.id.createGroupSelect:
                 SharedClass.title = usernameEditText.getText().toString();
                 SharedClass.imageUri = imageUri;
+                SharedClass.selected.add(firebaseUser.getUid().toString());
                 startActivity(new Intent(CreateGroupActivity.this, SelectMembersActivity.class));
                 break;
         }
