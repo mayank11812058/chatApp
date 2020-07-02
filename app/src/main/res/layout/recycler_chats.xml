@@ -45,5 +45,13 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="5dp"/>
         </LinearLayout>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="right|center_vertical"
+            android:id="@+id/recyclerChatsTick"
+            android:src="@android:drawable/checkbox_on_background"
+            android:visibility="gone"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

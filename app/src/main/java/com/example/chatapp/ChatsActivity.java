@@ -56,6 +56,9 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                 viewPagerAdapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
                 return true;
+            case R.id.menuCreateGroup:
+                startActivity(new Intent(ChatsActivity.this, CreateGroupActivity.class));
+                return true;
             default:
                 return false;
         }

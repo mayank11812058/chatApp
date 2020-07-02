@@ -13,6 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".SelectMembersActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CreateGroupActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ContactProfile"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

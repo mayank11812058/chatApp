@@ -37,6 +37,7 @@ public class ChatsFragment extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference usersReference = db.collection("User");
     CollectionReference messageReferences = db.collection("Messages");
+    CollectionReference groupReference = db.collection("Group");
 
     public ChatsFragment() {
     }
@@ -77,12 +78,11 @@ public class ChatsFragment extends Fragment {
     }
 
     public void refresh(){
+        users.clear();
         usersReference.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @SuppressLint("NewApi")
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                users.clear();
-
                 for(QueryDocumentSnapshot snapshots : queryDocumentSnapshots){
                     final String username = snapshots.getString("username");
                     final String email = snapshots.getString("email");
@@ -102,6 +102,50 @@ public class ChatsFragment extends Fragment {
                                                             snapshots.getString("userId").equals(userId))) {
                                                 UserData userData = new UserData(username, email, imageUri, userId, status);
                                                 userData.setTime(snapshots.getLong("createdAt"));
+                                                users.add(userData);
+                                                recyclerViewAdapter.notifyDataSetChanged();
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                        );
+                    }
+                }
+
+                users.sort(new Comparator<UserData>() {
+                    @Override
+                    public int compare(UserData o1, UserData o2) {
+                        return (int)(o2.getTime() - o1.getTime());
+                    }
+                });
+                recyclerViewAdapter.notifyDataSetChanged();
+            }
+        });
+
+        groupReference.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @SuppressLint("NewApi")
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for(QueryDocumentSnapshot snapshots : queryDocumentSnapshots){
+                    final String title = snapshots.getString("title");
+                    final String imageUri = snapshots.getString("imageUri");
+                    final String groupId = snapshots.getId();
+                    final ArrayList<String> members = (ArrayList<String>) snapshots.get("members");
+
+                    if(members.contains(firebaseUser.getUid().toString())){
+                        messageReferences.orderBy("createdAt", Query.Direction.ASCENDING).get().addOnSuccessListener(
+                                new OnSuccessListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                        for(QueryDocumentSnapshot snapshots : queryDocumentSnapshots) {
+                                            if (groupId.equals(snapshots.getString("groupId"))) {
+                                                UserData userData = new UserData();
+                                                userData.setTime(snapshots.getLong("createdAt"));
+                                                userData.setTitle(title);
+                                                userData.setImageUri(imageUri);
+                                                userData.setGroupId(groupId);
+                                                userData.setMembers(members);
                                                 users.add(userData);
                                                 recyclerViewAdapter.notifyDataSetChanged();
                                                 break;

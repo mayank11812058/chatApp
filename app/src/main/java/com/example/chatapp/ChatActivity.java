@@ -61,7 +61,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     CollectionReference userReference = db.collection("User");
     CollectionReference messageReference = db.collection("Messages");
     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-    String recevierName, recevierId, recevierEmail, recevierImageUri, recevierStatus;
+    String recevierName, recevierId, recevierEmail, recevierImageUri, recevierStatus, groupId, title;
+    ArrayList<String> members;
     Uri imageUri;
 
     @Override
@@ -80,6 +81,9 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 intent.putExtra("recevierId", recevierId);
                 intent.putExtra("recevierImageUri", recevierImageUri);
                 intent.putExtra("recevierStatus", recevierStatus);
+                intent.putExtra("groupId", groupId);
+                intent.putExtra("title", title);
+                intent.putExtra("members", members);
                 startActivity(intent);
                 break;
         }
@@ -96,8 +100,17 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         recevierEmail = intent.getStringExtra("recevierEmail");
         recevierImageUri = intent.getStringExtra("recevierImageUri");
         recevierStatus = intent.getStringExtra("recevierStatus");
+        groupId = intent.getStringExtra("groupId");
+        title = intent.getStringExtra("title");
+        members = intent.getStringArrayListExtra("members");
         toolbar = findViewById(R.id.chatToolbar);
-        toolbar.setTitle(recevierName);
+
+        if(recevierName != null) {
+            toolbar.setTitle(recevierName);
+        }else{
+            toolbar.setTitle(title);
+        }
+
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.backbtn));
@@ -127,11 +140,24 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 messagesList.clear();
 
                 for(QueryDocumentSnapshot snapshot : queryDocumentSnapshots){
-                    if((snapshot.getString("userId").equals(firebaseUser.getUid().toString()) && snapshot.getString("recevierId").equals(recevierId)) ||
+                    if(recevierId != null){
+                        if(snapshot.getString("userId").equals(firebaseUser.getUid().toString()) && recevierId.equals(snapshot.getString("recevierId")) ||
                             (snapshot.getString("userId").equals(recevierId) && snapshot.getString("recevierId").equals(firebaseUser.getUid().toString()))){
+                            Message tempMessage = new Message();
+                            tempMessage.setUserId(snapshot.getString("userId"));
+                            tempMessage.setRecevierId(snapshot.getString("recevierId"));
+                            tempMessage.setTextMessage(snapshot.getString("textMessage"));
+                            tempMessage.setImageUri(snapshot.getString("imageUri"));
+                            tempMessage.setCreatedAt(snapshot.getLong("createdAt"));
+                            messagesList.add(tempMessage);
+                            recyclerViewChatAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    if(recevierId == null && groupId.equals(snapshot.getString("groupId"))){
                         Message tempMessage = new Message();
                         tempMessage.setUserId(snapshot.getString("userId"));
-                        tempMessage.setRecevierId(snapshot.getString("recevierId"));
+                        tempMessage.setGroupId(snapshot.getString("groupId"));
                         tempMessage.setTextMessage(snapshot.getString("textMessage"));
                         tempMessage.setImageUri(snapshot.getString("imageUri"));
                         tempMessage.setCreatedAt(snapshot.getLong("createdAt"));
@@ -154,11 +180,24 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 messagesList.clear();
 
                 for(QueryDocumentSnapshot snapshot : queryDocumentSnapshots){
-                    if((snapshot.getString("userId").equals(firebaseUser.getUid().toString()) && snapshot.getString("recevierId").equals(recevierId)) ||
+                    if(recevierId != null){
+                        if(snapshot.getString("userId").equals(firebaseUser.getUid().toString()) && recevierId.equals(snapshot.getString("recevierId")) ||
                             (snapshot.getString("userId").equals(recevierId) && snapshot.getString("recevierId").equals(firebaseUser.getUid().toString()))){
+                            Message tempMessage = new Message();
+                            tempMessage.setUserId(snapshot.getString("userId"));
+                            tempMessage.setRecevierId(snapshot.getString("recevierId"));
+                            tempMessage.setTextMessage(snapshot.getString("textMessage"));
+                            tempMessage.setImageUri(snapshot.getString("imageUri"));
+                            tempMessage.setCreatedAt(snapshot.getLong("createdAt"));
+                            messagesList.add(tempMessage);
+                            recyclerViewChatAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    if(recevierId == null && groupId.equals(snapshot.getString("groupId"))){
                         Message tempMessage = new Message();
                         tempMessage.setUserId(snapshot.getString("userId"));
-                        tempMessage.setRecevierId(snapshot.getString("recevierId"));
+                        tempMessage.setGroupId(snapshot.getString("groupId"));
                         tempMessage.setTextMessage(snapshot.getString("textMessage"));
                         tempMessage.setImageUri(snapshot.getString("imageUri"));
                         tempMessage.setCreatedAt(snapshot.getLong("createdAt"));
@@ -199,7 +238,12 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     public void sendMessage(){
         final Message message = new Message();
         message.setUserId(firebaseUser.getUid().toString());
-        message.setRecevierId(recevierId);
+
+        if(recevierId != null) {
+            message.setRecevierId(recevierId);
+        }else{
+            message.setGroupId(groupId);
+        }
         message.setTextMessage(editText.getText().toString());
 
         if(imageUri != null) {

@@ -23,6 +23,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -39,6 +40,7 @@ public class ContactsActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference usersReference = db.collection("User");
+    CollectionReference groupReference = db.collection("Group");
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -89,30 +91,28 @@ public class ContactsActivity extends AppCompatActivity {
             }
         };
 
-        usersReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @SuppressLint("NewApi")
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                users.clear();
-
-                for(QueryDocumentSnapshot snapshots : queryDocumentSnapshots){
-                    String username = snapshots.getString("username");
-                    String email = snapshots.getString("email");
-                    String imageUri = snapshots.getString("imageUri");
-                    String userId = snapshots.getString("userId");
-                    String status = snapshots.getString("status");
-
-                    if(!userId.equals(firebaseUser.getUid().toString())){
-
-                        UserData userData = new UserData(username, email, imageUri, userId, status);
-                        users.add(userData);
-                        recyclerViewAdapter.notifyDataSetChanged();
-                    }
-                }
-
-
-            }
-        });
+//        usersReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+//            @SuppressLint("NewApi")
+//            @Override
+//            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+//                users.clear();
+//
+//                for(QueryDocumentSnapshot snapshots : queryDocumentSnapshots){
+//                    String username = snapshots.getString("username");
+//                    String email = snapshots.getString("email");
+//                    String imageUri = snapshots.getString("imageUri");
+//                    String userId = snapshots.getString("userId");
+//                    String status = snapshots.getString("status");
+//
+//                    if(!userId.equals(firebaseUser.getUid().toString())){
+//
+//                        UserData userData = new UserData(username, email, imageUri, userId, status);
+//                        users.add(userData);
+//                        recyclerViewAdapter.notifyDataSetChanged();
+//                    }
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -130,11 +130,11 @@ public class ContactsActivity extends AppCompatActivity {
     }
 
     public void refresh(){
+        users.clear();
+
         usersReference.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                users.clear();
-
                 for(QueryDocumentSnapshot snapshots : queryDocumentSnapshots){
                     String username = snapshots.getString("username");
                     String email = snapshots.getString("email");
@@ -149,6 +149,37 @@ public class ContactsActivity extends AppCompatActivity {
                         recyclerViewAdapter.notifyDataSetChanged();
                     }
                 }
+            }
+        });
+
+        groupReference.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @SuppressLint("NewApi")
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for(QueryDocumentSnapshot snapshots : queryDocumentSnapshots){
+                    final String title = snapshots.getString("title");
+                    final String imageUri = snapshots.getString("imageUri");
+                    final String groupId = snapshots.getId();
+                    ArrayList<String> members = (ArrayList<String>) snapshots.get("members");
+
+                    if(members.contains(firebaseUser.getUid().toString())){
+                        UserData userData = new UserData();
+                        userData.setTitle(title);
+                        userData.setImageUri(imageUri);
+                        userData.setGroupId(groupId);
+                        userData.setMembers(members);
+                        users.add(userData);
+                        recyclerViewAdapter.notifyDataSetChanged();
+                    }
+                }
+
+                users.sort(new Comparator<UserData>() {
+                    @Override
+                    public int compare(UserData o1, UserData o2) {
+                        return (int)(o2.getTime() - o1.getTime());
+                    }
+                });
+                recyclerViewAdapter.notifyDataSetChanged();
             }
         });
     }

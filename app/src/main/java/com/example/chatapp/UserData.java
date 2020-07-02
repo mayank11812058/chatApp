@@ -8,6 +8,38 @@ public class UserData {
     String email;
     String imageUri;
     String userId;
+    String groupId;
+    String title;
+    ArrayList<String> members;
+
+    public void setMembers(ArrayList<String> members) {
+        this.members = members;
+    }
+
+    public ArrayList<String> getMembers() {
+        return members;
+    }
+
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     String status;
     private long time;
     ArrayList<String> ImageStatus = new ArrayList<>();

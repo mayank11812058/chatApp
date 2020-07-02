@@ -7,6 +7,10 @@
         android:id="@+id/menuProfile" />
 
     <item
+        android:title="Create Group"
+        android:id="@+id/menuCreateGroup" />
+
+    <item
         android:title="Refresh"
         android:id="@+id/menuRefresh"/>
 
